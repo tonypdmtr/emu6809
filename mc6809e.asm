@@ -715,7 +715,7 @@ proc       ClearMemory
            mov     es,ax
            mov     di,0
            mov     cx,0FFFFh           ; 65535 bytes
-           mov     ax,0                ; initiialization value
+           mov     ax,0                ; initialization value
            rep stosb
            stosb                       ; one more for the last byte
            pop     es
