@@ -542,7 +542,7 @@ OpCode11   dw      131 dup(mcERROR)    ; 00 -> 82 -- none
 ;
 Copyright  db      "Motorola 6809E Emulator ver. 1.20 "
            db      "(Limited OS-9 Level One Ver. 2.00 Emulator)",RETURN,LINEFEED
-           db      "Copyright (c) 1990-2019 by Tony G. Papadimitriou. "
+           db      "Copyright (c) 1990-2021 by Tony G. Papadimitriou. "
            db      "All Rights Reserved.",RETURN,LINEFEED
            db      "(Assembled on: ",??date,")",RETURN,LINEFEED
            db      RETURN,LINEFEED
