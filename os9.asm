@@ -26,6 +26,8 @@ OS9Table   dw      06h dup(OS9_Error)  ; unsupported/unknown function
 
            CODESEG
 
+;*******************************************************************************
+
 proc       OS9
            mov     si,[PC]             ; get function code at PC
            GetByte                     ; in AL
@@ -36,6 +38,8 @@ proc       OS9
            add     bx,ax
            jmp     [word bx]           ; call routine through table (indirect)
 endp       OS9
+
+;*******************************************************************************
 
 proc       OS9_Error
            call    Beep
@@ -52,9 +56,7 @@ proc       OS9_Error
 @@MsgLen   =       $ - @@Msg
 endp       OS9_Error
 
-;
-; ===================================================================
-;
+;*******************************************************************************
 
 proc       I_read
            xor     bx,bx
@@ -77,6 +79,8 @@ proc       I_read
 @@exit:    ret
 endp       I_read
 
+;*******************************************************************************
+
 proc       I_write
            xor     bx,bx
            mov     ah,DOS_WRITE_TO_HANDLE
@@ -98,6 +102,8 @@ proc       I_write
 @@exit:    ret
 endp       I_write
 
+;*******************************************************************************
+
 proc       I_readln
            xor     bx,bx
            mov     ah,DOS_READ_FROM_HANDLE
@@ -118,6 +124,8 @@ proc       I_readln
            mov     [B],al
 @@exit:    ret
 endp       I_readln
+
+;*******************************************************************************
 
 proc       I_writln
            xor     bx,bx
@@ -151,6 +159,8 @@ proc       I_writln
 @@NewLine  db      RETURN,LINEFEED
 @@NewLineL =       $ - @@NewLine
 endp       I_writln
+
+;*******************************************************************************
 
 proc       F_exit
            mov     al,[B]

@@ -34,6 +34,8 @@ proc       mcSUBA
 @@exit:    ret
 endp       mcSUBA
 
+;*******************************************************************************
+
 proc       mcCMPA
            call    GetEffAddr
            cmp     [OpCode],81h        ; is it the immediate mode?
@@ -56,6 +58,8 @@ proc       mcCMPA
            SNegative
 @@exit:    ret
 endp       mcCMPA
+
+;*******************************************************************************
 
 proc       mcSBCA
            call    GetEffAddr
@@ -83,6 +87,8 @@ proc       mcSBCA
 @@exit:    ret
 endp       mcSBCA
 
+;*******************************************************************************
+
 proc       mcSUBD
            call    GetEffAddr
            cmp     [OpCode],83h        ; is it the immediate mode?
@@ -107,6 +113,8 @@ proc       mcSUBD
 @@exit:    ret
 endp       mcSUBD
 
+;*******************************************************************************
+
 proc       mcANDA
            call    GetEffAddr
            cmp     [OpCode],84h        ; is it the immediate mode?
@@ -125,6 +133,8 @@ proc       mcANDA
            SNegative
 @@exit:    ret
 endp       mcANDA
+
+;*******************************************************************************
 
 proc       mcBITA
            call    GetEffAddr
@@ -146,6 +156,8 @@ proc       mcBITA
 @@exit:    ret
 endp       mcBITA
 
+;*******************************************************************************
+
 proc       mcLDA
            call    GetEffAddr
            cmp     [OpCode],86h        ; is it the immediate mode?
@@ -164,6 +176,8 @@ proc       mcLDA
 @@exit:    ret
 endp       mcLDA
 
+;*******************************************************************************
+
 proc       mcEORA
            call    GetEffAddr
            cmp     [OpCode],88h        ; is it the immediate mode?
@@ -181,6 +195,8 @@ proc       mcEORA
            SNegative
 @@exit:    ret
 endp       mcEORA
+
+;*******************************************************************************
 
 proc       mcADCA
            call    GetEffAddr
@@ -212,6 +228,8 @@ proc       mcADCA
 @@exit:    ret
 endp       mcADCA
 
+;*******************************************************************************
+
 proc       mcORA
            call    GetEffAddr
            cmp     [OpCode],8Ah        ; is it the immediate mode?
@@ -229,6 +247,8 @@ proc       mcORA
            SNegative
 @@exit:    ret
 endp       mcORA
+
+;*******************************************************************************
 
 proc       mcADDA
            call    GetEffAddr
@@ -257,6 +277,8 @@ proc       mcADDA
 @@exit:    ret
 endp       mcADDA
 
+;*******************************************************************************
+
 proc       mcCMPX
            call    GetEffAddr
            cmp     [OpCode],8Ch        ; is it the immediate mode?
@@ -281,6 +303,8 @@ proc       mcCMPX
 @@exit:    ret
 endp       mcCMPX
 
+;*******************************************************************************
+
 proc       mcBSR
            call    GetEffAddr
            cmp     [OpCode],17h        ; is it a long or short branch?
@@ -304,6 +328,8 @@ proc       mcBSR
            ret
 endp       mcBSR
 
+;*******************************************************************************
+
 proc       mcLDX
            call    GetEffAddr
            cmp     [OpCode],8Eh        ; is it the immediate mode?
@@ -323,6 +349,8 @@ proc       mcLDX
 @@exit:    ret
 endp       mcLDX
 
+;*******************************************************************************
+
 proc       mcSTA
            mov     al,[A]              ; get the 6809 register
            call    GetEffAddr
@@ -337,6 +365,8 @@ proc       mcSTA
            SNegative
 @@exit:    ret
 endp       mcSTA
+
+;*******************************************************************************
 
 proc       mcSTX
            mov     ax,[X]              ; get the 6809 register
@@ -353,6 +383,8 @@ proc       mcSTX
 @@exit:    ret
 endp       mcSTX
 
+;*******************************************************************************
+
 proc       mcJSR
            call    GetEffAddr
            push    si
@@ -365,6 +397,8 @@ proc       mcJSR
            mov     [PC],si
            ret
 endp       mcJSR
+
+;*******************************************************************************
 
 proc       mcSUBB
            call    GetEffAddr
@@ -389,6 +423,8 @@ proc       mcSUBB
 @@exit:    ret
 endp       mcSUBB
 
+;*******************************************************************************
+
 proc       mcCMPB
            call    GetEffAddr
            cmp     [OpCode],0C1h       ; is it the immediate mode?
@@ -411,6 +447,8 @@ proc       mcCMPB
            SNegative
 @@exit:    ret
 endp       mcCMPB
+
+;*******************************************************************************
 
 proc       mcSBCB
            call    GetEffAddr
@@ -437,6 +475,8 @@ proc       mcSBCB
            SNegative
 @@exit:    ret
 endp       mcSBCB
+
+;*******************************************************************************
 
 proc       mcADDD
            call    GetEffAddr
@@ -466,6 +506,8 @@ proc       mcADDD
 @@exit:    ret
 endp       mcADDD
 
+;*******************************************************************************
+
 proc       mcANDB
            call    GetEffAddr
            cmp     [OpCode],0C4h       ; is it the immediate mode?
@@ -484,6 +526,8 @@ proc       mcANDB
            SNegative
 @@exit:    ret
 endp       mcANDB
+
+;*******************************************************************************
 
 proc       mcBITB
            call    GetEffAddr
@@ -505,6 +549,8 @@ proc       mcBITB
 @@exit:    ret
 endp       mcBITB
 
+;*******************************************************************************
+
 proc       mcLDB
            call    GetEffAddr
            cmp     [OpCode],0C6h       ; is it the immediate mode?
@@ -523,6 +569,8 @@ proc       mcLDB
 @@exit:    ret
 endp       mcLDB
 
+;*******************************************************************************
+
 proc       mcSTB
            mov     al,[B]              ; get the 6809 register
            call    GetEffAddr
@@ -537,6 +585,8 @@ proc       mcSTB
            SNegative
 @@exit:    ret
 endp       mcSTB
+
+;*******************************************************************************
 
 proc       mcEORB
            call    GetEffAddr
@@ -555,6 +605,8 @@ proc       mcEORB
            SNegative
 @@exit:    ret
 endp       mcEORB
+
+;*******************************************************************************
 
 proc       mcADCB
            call    GetEffAddr
@@ -586,6 +638,8 @@ proc       mcADCB
 @@exit:    ret
 endp       mcADCB
 
+;*******************************************************************************
+
 proc       mcORB
            call    GetEffAddr
            cmp     [OpCode],0CAh       ; is it the immediate mode?
@@ -603,6 +657,8 @@ proc       mcORB
            SNegative
 @@exit:    ret
 endp       mcORB
+
+;*******************************************************************************
 
 proc       mcADDB
            call    GetEffAddr
@@ -631,6 +687,8 @@ proc       mcADDB
 @@exit:    ret
 endp       mcADDB
 
+;*******************************************************************************
+
 proc       mcLDD
            call    GetEffAddr
            cmp     [OpCode],0CCh       ; is it the immediate mode?
@@ -650,6 +708,8 @@ proc       mcLDD
 @@exit:    ret
 endp       mcLDD
 
+;*******************************************************************************
+
 proc       mcSTD
            mov     ax,[D]              ; get the 6809 register
            call    GetEffAddr
@@ -664,6 +724,8 @@ proc       mcSTD
            SNegative
 @@exit:    ret
 endp       mcSTD
+
+;*******************************************************************************
 
 proc       mcLDU
            call    GetEffAddr
@@ -684,6 +746,8 @@ proc       mcLDU
 @@exit:    ret
 endp       mcLDU
 
+;*******************************************************************************
+
 proc       mcSTU
            mov     ax,[U]              ; get the 6809 register
            call    GetEffAddr
@@ -698,6 +762,8 @@ proc       mcSTU
            SNegative
 @@exit:    ret
 endp       mcSTU
+
+;*******************************************************************************
 
 proc       mcSWI2
            cmp     [OS9_On],1          ; is OS9 emulation active?
@@ -743,6 +809,8 @@ proc       mcSWI2
            ret                         ; alternate exit
 endp       mcSWI2
 
+;*******************************************************************************
+
 proc       mcCMPD
            call    GetEffAddr
            cmp     [OpCode],83h        ; is it the immediate mode?
@@ -767,6 +835,8 @@ proc       mcCMPD
 @@exit:    ret
 endp       mcCMPD
 
+;*******************************************************************************
+
 proc       mcCMPY
            call    GetEffAddr
            cmp     [OpCode],8Ch        ; is it the immediate mode?
@@ -790,6 +860,8 @@ proc       mcCMPY
            SNegative
 @@exit:    ret
 endp       mcCMPY
+
+;*******************************************************************************
 
 proc       mcSWI3
            SEntireFlag
@@ -832,6 +904,8 @@ proc       mcSWI3
            ret
 endp       mcSWI3
 
+;*******************************************************************************
+
 proc       mcCMPU
            call    GetEffAddr
            cmp     [OpCode],83h        ; is it the immediate mode?
@@ -855,6 +929,8 @@ proc       mcCMPU
            SNegative
 @@exit:    ret
 endp       mcCMPU
+
+;*******************************************************************************
 
 proc       mcCMPS
            call    GetEffAddr
@@ -880,6 +956,8 @@ proc       mcCMPS
 @@exit:    ret
 endp       mcCMPS
 
+;*******************************************************************************
+
 proc       mcSTY
            mov     ax,[Y]              ; get the 6809 register
            call    GetEffAddr
@@ -895,6 +973,8 @@ proc       mcSTY
 @@exit:    ret
 endp       mcSTY
 
+;*******************************************************************************
+
 proc       mcSTS
            mov     ax,[S]              ; get the 6809 register
            call    GetEffAddr
@@ -909,6 +989,8 @@ proc       mcSTS
            SNegative
 @@exit:    ret
 endp       mcSTS
+
+;*******************************************************************************
 
 proc       mcLDY
            call    GetEffAddr
@@ -928,6 +1010,8 @@ proc       mcLDY
            SNegative
 @@exit:    ret
 endp       mcLDY
+
+;*******************************************************************************
 
 proc       mcLDS
            call    GetEffAddr

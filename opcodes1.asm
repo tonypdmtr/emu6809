@@ -9,6 +9,7 @@
 ;          emulator program originally written in Turbo Pascal.  Because
 ;          it is completely written in Assembly language there should be
 ;          a dramatic speed improvement over the Pascal version.
+;          Note: SYNC instruction is currently not implemented
 ;*******************************************************************************
 
 proc       mcERROR                     ; special routine to handle invalid ops
@@ -17,7 +18,8 @@ proc       mcERROR                     ; special routine to handle invalid ops
            ret
 endp       mcERROR
 
-; ===================================================================
+
+;*******************************************************************************
 
 proc       mcNEG
            mov     al,[OpCode]
@@ -47,6 +49,8 @@ proc       mcNEG
 @@exit:    ret
 endp       mcNEG
 
+;*******************************************************************************
+
 proc       mcCOM
            mov     al,[OpCode]
            shr     al,4                ; MSN -> LSN
@@ -71,6 +75,8 @@ proc       mcCOM
 @@exit:    ret
 endp       mcCOM
 
+;*******************************************************************************
+
 proc       mcLSR
            mov     al,[OpCode]
            shr     al,4                ; MSN -> LSN
@@ -94,6 +100,8 @@ proc       mcLSR
            SCarry
 @@exit:    ret
 endp       mcLSR
+
+;*******************************************************************************
 
 proc       mcROR
            mov     al,[OpCode]
@@ -121,6 +129,8 @@ proc       mcROR
 @@exit:    ret
 endp       mcROR
 
+;*******************************************************************************
+
 proc       mcASR
            mov     al,[OpCode]
            shr     al,4                ; MSN -> LSN
@@ -146,6 +156,8 @@ proc       mcASR
            SCarry
 @@exit:    ret
 endp       mcASR
+
+;*******************************************************************************
 
 proc       mcASL
            mov     al,[OpCode]
@@ -175,6 +187,8 @@ proc       mcASL
 @@exit:    ret
 endp       mcASL
 
+;*******************************************************************************
+
 proc       mcROL
            mov     al,[OpCode]
            shr     al,4                ; MSN -> LSN
@@ -203,6 +217,8 @@ proc       mcROL
 @@exit:    ret
 endp       mcROL
 
+;*******************************************************************************
+
 proc       mcDEC
            mov     al,[OpCode]
            shr     al,4                ; MSN -> LSN
@@ -228,6 +244,8 @@ proc       mcDEC
            SOverflow
 @@exit:    ret
 endp       mcDEC
+
+;*******************************************************************************
 
 proc       mcINC
            mov     al,[OpCode]
@@ -255,6 +273,8 @@ proc       mcINC
 @@exit:    ret
 endp       mcINC
 
+;*******************************************************************************
+
 proc       mcTST
            mov     al,[OpCode]
            shr     al,4                ; MSN -> LSN
@@ -279,11 +299,15 @@ proc       mcTST
 @@exit:    ret
 endp       mcTST
 
+;*******************************************************************************
+
 proc       mcJMP
            call    GetEffAddr
            mov     [PC],si
            ret
 endp       mcJMP
+
+;*******************************************************************************
 
 proc       mcCLR
            mov     al,[OpCode]
@@ -305,13 +329,19 @@ proc       mcCLR
 @@exit:    ret
 endp       mcCLR
 
+;*******************************************************************************
+
 proc       mcNOP
            ret
 endp       mcNOP
 
+;*******************************************************************************
+
 proc       mcSYNC                      ; not implemented at this time
            ret
 endp       mcSYNC
+
+;*******************************************************************************
 
 proc       mcDAA
            mov     al,[A]
@@ -329,6 +359,8 @@ proc       mcDAA
 @@exit:    ret
 endp       mcDAA
 
+;*******************************************************************************
+
 proc       mcORCC
            mov     si,[PC]
            GetByte
@@ -337,6 +369,8 @@ proc       mcORCC
            ret
 endp       mcORCC
 
+;*******************************************************************************
+
 proc       mcANDCC
            mov     si,[PC]
            GetByte
@@ -344,6 +378,8 @@ proc       mcANDCC
            and     [CC],al
            ret
 endp       mcANDCC
+
+;*******************************************************************************
 
 proc       mcSEX
            mov     al,[B]
@@ -359,6 +395,8 @@ proc       mcSEX
 endp       mcSEX
 
 ; general purpose procedure (see EXG and TFR instructions)
+;*******************************************************************************
+
 proc       GetRegister                 ; get the value of the register in AL/AX
            cmp     al,0                ; is it D?
            je      @@D
@@ -405,7 +443,9 @@ proc       GetRegister                 ; get the value of the register in AL/AX
 @@exit:    ret
 endp       GetRegister
 
-; general purpose procedure (see EXG and TFR instructions)
+;*******************************************************************************
+; Purpose: General purpose procedure (see EXG and TFR instructions)
+
 proc       PutRegister                 ; save the value of BL/BX in the register
            cmp     al,0                ; is it D?
            je      @@D
@@ -451,6 +491,8 @@ proc       PutRegister                 ; save the value of BL/BX in the register
 @@DP:      mov     [DPR],bl
 @@exit:    ret
 endp       PutRegister
+
+;*******************************************************************************
 
 proc       mcEXG
            mov     si,[PC]
@@ -498,6 +540,8 @@ proc       mcEXG
            ret
 endp       mcEXG
 
+;*******************************************************************************
+
 proc       mcTFR
            mov     si,[PC]
            GetByte
@@ -526,6 +570,8 @@ proc       mcTFR
            ret
 endp       mcTFR
 
+;*******************************************************************************
+
 proc       mcBRA
            call    GetEffAddr
            cmp     [OpCode],16h        ; is it a long or short branch?
@@ -541,6 +587,8 @@ proc       mcBRA
            ret
 endp       mcBRA
 
+;*******************************************************************************
+
 proc       mcBRN
            mov     al,[Paged]          ; is it a long or short branch?
            cmp     al,10h              ; PAGE2?
@@ -551,6 +599,8 @@ proc       mcBRN
            inc     [PC]
 @@exit:    ret
 endp       mcBRN
+
+;*******************************************************************************
 
 proc       mcBHI
            call    GetEffAddr
@@ -571,6 +621,8 @@ proc       mcBHI
 @@exit:    ret
 endp       mcBHI
 
+;*******************************************************************************
+
 proc       mcBLS
            call    GetEffAddr
            mov     al,[Paged]          ; is it a long or short branch?
@@ -590,6 +642,8 @@ proc       mcBLS
 @@exit:    ret
 endp       mcBLS
 
+;*******************************************************************************
+
 proc       mcBHS
            call    GetEffAddr
            mov     al,[Paged]          ; is it a long or short branch?
@@ -607,6 +661,8 @@ proc       mcBHS
            add     [PC],ax
 @@exit:    ret
 endp       mcBHS
+
+;*******************************************************************************
 
 proc       mcBLO
            call    GetEffAddr
@@ -626,6 +682,8 @@ proc       mcBLO
 @@exit:    ret
 endp       mcBLO
 
+;*******************************************************************************
+
 proc       mcBNE
            call    GetEffAddr
            mov     al,[Paged]          ; is it a long or short branch?
@@ -643,6 +701,8 @@ proc       mcBNE
            add     [PC],ax
 @@exit:    ret
 endp       mcBNE
+
+;*******************************************************************************
 
 proc       mcBEQ
            call    GetEffAddr
@@ -662,6 +722,8 @@ proc       mcBEQ
 @@exit:    ret
 endp       mcBEQ
 
+;*******************************************************************************
+
 proc       mcBVC
            call    GetEffAddr
            mov     al,[Paged]          ; is it a long or short branch?
@@ -679,6 +741,8 @@ proc       mcBVC
            add     [PC],ax
 @@exit:    ret
 endp       mcBVC
+
+;*******************************************************************************
 
 proc       mcBVS
            call    GetEffAddr
@@ -698,6 +762,8 @@ proc       mcBVS
 @@exit:    ret
 endp       mcBVS
 
+;*******************************************************************************
+
 proc       mcBPL
            call    GetEffAddr
            mov     al,[Paged]          ; is it a long or short branch?
@@ -716,6 +782,8 @@ proc       mcBPL
 @@exit:    ret
 endp       mcBPL
 
+;*******************************************************************************
+
 proc       mcBMI
            call    GetEffAddr
            mov     al,[Paged]          ; is it a long or short branch?
@@ -733,6 +801,8 @@ proc       mcBMI
            add     [PC],ax
 @@exit:    ret
 endp       mcBMI
+
+;*******************************************************************************
 
 proc       mcBGE
            call    GetEffAddr
@@ -756,6 +826,8 @@ proc       mcBGE
 @@exit:    ret
 endp       mcBGE
 
+;*******************************************************************************
+
 proc       mcBLT
            call    GetEffAddr
            mov     al,[Paged]          ; is it a long or short branch?
@@ -776,6 +848,8 @@ proc       mcBLT
            add     [PC],ax
 @@exit:    ret
 endp       mcBLT
+
+;*******************************************************************************
 
 proc       mcBGT
            call    GetEffAddr
@@ -801,6 +875,8 @@ proc       mcBGT
 @@exit:    ret
 endp       mcBGT
 
+;*******************************************************************************
+
 proc       mcBLE
            call    GetEffAddr
            mov     al,[Paged]          ; is it a long or short branch?
@@ -824,6 +900,8 @@ proc       mcBLE
 @@exit:    ret
 endp       mcBLE
 
+;*******************************************************************************
+
 proc       mcLEAX
            call    GetEffAddr
            mov     [X],si
@@ -833,6 +911,8 @@ proc       mcLEAX
            or      [CC],00000100b
 @@exit:    ret
 endp       mcLEAX
+
+;*******************************************************************************
 
 proc       mcLEAY
            call    GetEffAddr
@@ -844,17 +924,23 @@ proc       mcLEAY
 @@exit:    ret
 endp       mcLEAY
 
+;*******************************************************************************
+
 proc       mcLEAS
            call    GetEffAddr
            mov     [S],si
            ret
 endp       mcLEAS
 
+;*******************************************************************************
+
 proc       mcLEAU
            call    GetEffAddr
            mov     [U],si
            ret
 endp       mcLEAU
+
+;*******************************************************************************
 
 proc       mcPSHS
            mov     si,[PC]
@@ -919,6 +1005,8 @@ proc       mcPSHS
 @@exit:    ret
 endp       mcPSHS
 
+;*******************************************************************************
+
 proc       mcPULS
            mov     si,[PC]
            GetByte
@@ -981,6 +1069,8 @@ proc       mcPULS
            mov     [PC],bx
 @@exit:    ret
 endp       mcPULS
+
+;*******************************************************************************
 
 proc       mcPSHU
            mov     si,[PC]
@@ -1045,6 +1135,8 @@ proc       mcPSHU
 @@exit:    ret
 endp       mcPSHU
 
+;*******************************************************************************
+
 proc       mcPULU
            mov     si,[PC]
            GetByte
@@ -1108,6 +1200,8 @@ proc       mcPULU
 @@exit:    ret
 endp       mcPULU
 
+;*******************************************************************************
+
 proc       mcRTS
            mov     si,[S]
            inc     [S]
@@ -1117,12 +1211,16 @@ proc       mcRTS
            ret
 endp       mcRTS
 
+;*******************************************************************************
+
 proc       mcABX
            xor     ax,ax
            mov     al,[B]
            add     [X],ax
            ret
 endp       mcABX
+
+;*******************************************************************************
 
 proc       mcRTI
            test    [CC],EntireFlagMask
@@ -1158,6 +1256,8 @@ proc       mcRTI
            inc     [S]
            ret
 endp       mcRTI
+
+;*******************************************************************************
 
 proc       mcCWAI
            mov     si,[PC]
@@ -1202,6 +1302,8 @@ proc       mcCWAI
            ret
 endp       mcCWAI
 
+;*******************************************************************************
+
 proc       mcMUL
            mov     al,[A]              ; get first operand
            mul     [B]                 ; multiply with second operand
@@ -1216,6 +1318,8 @@ proc       mcMUL
            or      [CC],00000001b
 @@exit:    ret
 endp       mcMUL
+
+;*******************************************************************************
 
 proc       mcSWI
            SEntireFlag

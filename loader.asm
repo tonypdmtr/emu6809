@@ -31,10 +31,12 @@ LocalSize  dw      ?                   ; size of currently active buffer
 
            CODESEG
 
+;*******************************************************************************
 ; Routine: UpCase
 ; Purpose: Convert a character to uppercase
 ; Input  : AL holds the character
 ; Output : AL holds the character in uppercase
+
 proc       UpCase
            cmp     al,'a'
            jb      @@exit
@@ -45,11 +47,13 @@ proc       UpCase
 endp       UpCase
 
 
+;*******************************************************************************
 ; Routine: HexIt
 ; Purpose: Convert a 2-byte hex string in AX to its binary value in AL
 ; Input  : AX holds hex string to convert
 ; Output : AL holds binary value
 ; Note   : if there is an error, the value 0 is returned
+
 proc       HexIt
            push    bx
            call    HexDigit
@@ -60,6 +64,9 @@ proc       HexIt
            or      al,bl
            pop     bx
            ret
+
+;*******************************************************************************
+
 proc       HexDigit
            call    UpCase
            cmp     al,'0'
@@ -79,12 +86,14 @@ proc       HexDigit
 endp       HexDigit
 endp       HexIt
 
+;*******************************************************************************
 ; Routine: Convert
 ; Purpose: Convert an S19 formatted buffer to binary and load to memory
 ; Input  : AX holds number of butes read in buffer
 ; Output : CX holds number of characters to read next (1 -> BufLen)
 ;        : DX points to starting point in buffer for next read
 ;        : AX holds error code if any
+
 proc       Convert
            mov     [LocalSize],ax      ; save size for later
            mov     [CheckSum],0        ; initialize CRC value
@@ -187,6 +196,7 @@ proc       Convert
            ret
 endp       Convert
 
+;*******************************************************************************
 ; Routine: LoadProgram
 ; Purpose: Try loading the program passed as parameter #1
 ; Input  : None
@@ -195,6 +205,7 @@ endp       Convert
 ;        : BX points to the beginning of the program
 ;        : DX points to the ending of the program
 ;        : CX holds the size of the program
+
 proc       LoadProgram
            mov     [CheckSum],0        ; initialize checksum
            push    ds                  ; save current DS

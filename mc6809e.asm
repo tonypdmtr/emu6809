@@ -63,7 +63,7 @@ endm       PutByte
 ; Macro  : PutWord
 ; Purpose: Put a word in AX to the 6809 memory pointed by ES:SI
 macro      PutWord
-           xchg     ah,al
+           xchg    ah,al
            mov     [es:si],ax
 endm       PutWord
 
@@ -610,10 +610,12 @@ A          db      ?                   ; primary 8-bit Accumulator (high D)
 
            CODESEG
 
+;*******************************************************************************
 ; Routine: Init6809
 ; Purpose: Call the various functions of the program
 ; Input  : None
 ; Output : None
+
 proc       Init6809
            mov     ax,@data            ; initialize DS
            mov     ds,ax
@@ -645,10 +647,12 @@ proc       Init6809
            int     DOS_FUNCTION
 endp       Init6809
 
-; Name   : ClrScr
+;*******************************************************************************
+; Routine: ClrScr
 ; Purpose: Clear the display and home the cursor
 ; Input  : None
 ; Output : None
+
 proc       ClrScr
            push    ax                  ; save registers
            push    bx
@@ -673,10 +677,12 @@ proc       ClrScr
            ret
 endp       ClrScr
 
+;*******************************************************************************
 ; Routine: ShwCprght
 ; Purpose: Display the program copyright message
 ; Input  : DS must point to the segment where the copyright is located
 ; Output : None
+
 proc       ShwCprght
            mov     dx,offset Copyright
            mov     cx,CprghtLen
@@ -684,10 +690,12 @@ proc       ShwCprght
            ret
 endp       ShwCprght
 
+;*******************************************************************************
 ; Routine: CheckVersion
 ; Purpose: Check the DOS version
 ; Input  : None
 ; Output : If DOS version is < 3.x then AX = 131 (error code) else AX = 0
+
 proc       CheckVersion
            push    bx
            push    cx
@@ -705,10 +713,12 @@ proc       CheckVersion
            ret
 endp       CheckVersion
 
+;*******************************************************************************
 ; Routine: ClearMemory
 ; Purpose: Fill 6809 segment with zeros
 ; Input  : None
 ; Output : None
+
 proc       ClearMemory
            push    es                  ; save registers
            mov     ax,@fardata
@@ -722,10 +732,12 @@ proc       ClearMemory
            ret
 endp       ClearMemory
 
+;*******************************************************************************
 ; Routine: Restart
 ; Purpose: Initialize the 6809 registers
 ; Input  : None
 ; Output : None
+
 proc       Restart
            push    ax                  ; save registers
            push    bx
@@ -751,10 +763,12 @@ endp       Restart
 
 include    "loader.asm"
 
+;*******************************************************************************
 ; Routine: Errors
 ; Purpose: Display an error message based on the code in AX
 ; Input  : AX holds the error code
 ; Output : None
+
 proc       Errors
            cmp     ax,0                ; do we have an error?
            jne     @@skip              ; error, go on and print it
@@ -834,10 +848,12 @@ proc       Errors
            ret
 endp       Errors
 
+;*******************************************************************************
 ; Routine: DirMode
 ; Purpose: Calculate the effective address assuming direct mode
 ; Input  : None
 ; Output : SI holds the effective address in the ES segment (6809)
+
 proc       DirMode
            push    ax
            mov     ah,[DPR]
@@ -849,19 +865,23 @@ proc       DirMode
            ret
 endp       DirMode
 
+;*******************************************************************************
 ; Routine: RelMode
 ; Purpose: Calculate the effective address assuming relative mode
 ; Input  : None
 ; Output : SI holds the effective address in the ES segment (6809)
+
 proc       RelMode
            mov     si,[PC]
            ret
 endp       RelMode
 
+;*******************************************************************************
 ; Routine: IndMode
 ; Purpose: Calculate the effective address assuming indexed mode
 ; Input  : None
 ; Output : SI holds the effective address in the ES segment (6809)
+
 proc       IndMode
            push    ax
            push    bx
@@ -1034,10 +1054,12 @@ proc       IndMode
            ret
 endp       IndMode
 
+;*******************************************************************************
 ; Routine: ExtMode
 ; Purpose: Calculate the effective address assuming extended mode
 ; Input  : None
 ; Output : SI holds the effective address in the ES segment (6809)
+
 proc       ExtMode
            push    ax
            mov     si,[PC]
@@ -1049,19 +1071,23 @@ proc       ExtMode
            ret
 endp       ExtMode
 
+;*******************************************************************************
 ; Routine: ImmMode
 ; Purpose: Calculate the effective address assuming immediate mode
 ; Input  : None
 ; Output : SI holds the effective address in the ES segment (6809)
+
 proc       ImmMode
            mov     si,[PC]
            ret
 endp       ImmMode
 
+;*******************************************************************************
 ; Routine: GetEffAddr
 ; Purpose: Get the effective address based on the MSN of the OpCode
 ; Input  : None
 ; Output : SI holds the effective address in the ES segment (6809)
+
 proc       GetEffAddr
            push    ax
            mov     al,[OpCode]
@@ -1120,12 +1146,14 @@ proc       GetEffAddr
            ret
 endp       GetEffAddr
 
+;*******************************************************************************
 ; Routine: Emulator
 ; Purpose: Perform the Fetch/Decode/Execute cycle until special key is pressed
 ;        : Special key should be one with extended code
 ;        : Currently the special key F10
 ; Input  : None
 ; Output : None
+
 proc       Emulator
 @@L0:      cmp     [Timer],0           ; check for breakpoints (Timer<>0)
            je      @@L1                ; no breakpoints, go on
@@ -1161,10 +1189,12 @@ proc       Emulator
            ret
 endp       Emulator
 
+;*******************************************************************************
 ; Routine: mcCASE10
 ; Purpose: Preprocess instruction prefix 10h
 ; Input  : None
 ; Output : None
+
 proc       mcCASE10
            mov     si,[PC]
            GetByte                     ; fetch additional OpCode
@@ -1177,10 +1207,12 @@ proc       mcCASE10
            jmp     [word bx]           ; go to routine through table (indirect)
 endp       mcCASE10
 
+;*******************************************************************************
 ; Routine: mcCASE11
 ; Purpose: Preprocess instruction prefix 11h
 ; Input  : None
 ; Output : None
+
 proc       mcCASE11
            mov     si,[PC]
            GetByte                     ; fetch additional OpCode
@@ -1204,11 +1236,13 @@ include    "os9.asm"                     ; OS-9 emulation routines
 ; ------------------ S U B R O U T I N E S --------------------------
 ;
 
+;*******************************************************************************
 ; Routine: Write
 ; Purpose: Write a string to standard output
 ; Input  : DS:DX points to string to print
 ;        : CX holds string's length
 ; Output : None
+
 proc       Write
            push    ax                  ; save registers
            push    bx
@@ -1220,10 +1254,12 @@ proc       Write
            ret
 endp       Write
 
+;*******************************************************************************
 ; Routine: Beep
 ; Purpose: Sound the beeper
 ; Input  : None
 ; Output : None
+
 proc       Beep
            push    ax                  ; save registers
            push    bx
