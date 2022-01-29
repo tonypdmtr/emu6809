@@ -41,154 +41,194 @@ HalfCarryMask  = 20h
 FIRQMask       = 40h
 EntireFlagMask = 80h
 
+;*******************************************************************************
 ; Macro  : GetByte
 ; Purpose: Get a byte in AL from the 6809 memory pointed by ES:SI
+
 macro      GetByte
            mov     al,[es:si]
 endm       GetByte
 
+;*******************************************************************************
 ; Macro  : GetWord
 ; Purpose: Get a word in AX from the 6809 memory pointed by ES:SI
+
 macro      GetWord
            mov      ax,[es:si]
            xchg     ah,al
 endm       GetWord
 
+;*******************************************************************************
 ; Macro  : PutByte
 ; Purpose: Put a byte in AL to the 6809 memory pointed by ES:SI
+
 macro      PutByte
            mov     [es:si],al
 endm       PutByte
 
+;*******************************************************************************
 ; Macro  : PutWord
 ; Purpose: Put a word in AX to the 6809 memory pointed by ES:SI
+
 macro      PutWord
            xchg    ah,al
            mov     [es:si],ax
 endm       PutWord
 
+;*******************************************************************************
 ; Macro  : CCarry
 ; Purpose: Clear Carry Flag
+
 macro      CCarry
            pushf
            and     [CC],11111110b
            popf
 endm       CCarry
 
+;*******************************************************************************
 ; Macro  : COverflow
 ; Purpose: Clear Overflow Flag
+
 macro      COverflow
            pushf
            and     [CC],11111101b
            popf
 endm       COverflow
 
+;*******************************************************************************
 ; Macro  : CZero
 ; Purpose: Clear Zero Flag
+
 macro      CZero
            pushf
            and     [CC],11111011b
            popf
 endm       CZero
 
+;*******************************************************************************
 ; Macro  : CNegative
 ; Purpose: Clear Negative Flag
+
 macro      CNegative
            pushf
            and     [CC],11110111b
            popf
 endm       CNegative
 
+;*******************************************************************************
 ; Macro  : CIRQ
 ; Purpose: Clear IRQ Flag
+
 macro      CIRQ
            pushf
            and     [CC],11101111b
            popf
 endm       CIRQ
 
+;*******************************************************************************
 ; Macro  : CHalfCarry
 ; Purpose: Clear Half Carry Flag
+
 macro      CHalfCarry
            pushf
            and     [CC],11011111b
            popf
 endm       CHalfCarry
 
+;*******************************************************************************
 ; Macro  : CFIRQ
 ; Purpose: Clear Fast IRQ Flag
+
 macro      CFIRQ
            pushf
            and     [CC],10111111b
            popf
 endm       CFIRQ
 
+;*******************************************************************************
 ; Macro  : CEntireFlag
 ; Purpose: Clear Entire Flag Flag
+
 macro      CEntireFlag
            pushf
            and     [CC],01111111b
            popf
 endm       CEntireFlag
 
+;*******************************************************************************
 ; Macro  : SCarry
 ; Purpose: Set Carry Flag
+
 macro      SCarry
            pushf
            or      [CC],00000001b
            popf
 endm       SCarry
 
+;*******************************************************************************
 ; Macro  : SOverflow
 ; Purpose: Set Overflow Flag
+
 macro      SOverflow
            pushf
            or      [CC],00000010b
            popf
 endm       SOverflow
 
+;*******************************************************************************
 ; Macro  : SZero
 ; Purpose: Set Zero Flag
+
 macro      SZero
            pushf
            or      [CC],00000100b
            popf
 endm       SZero
 
+;*******************************************************************************
 ; Macro  : SNegative
 ; Purpose: Set Negative Flag
+
 macro      SNegative
            pushf
            or      [CC],00001000b
            popf
 endm       SNegative
 
+;*******************************************************************************
 ; Macro  : SIRQ
 ; Purpose: Set IRQ Flag
+
 macro      SIRQ
            pushf
            or      [CC],00010000b
            popf
 endm       SIRQ
 
+;*******************************************************************************
 ; Macro  : SHalfCarry
 ; Purpose: Set Half Carry Flag
+
 macro      SHalfCarry
            pushf
            or      [CC],00100000b
            popf
 endm       SHalfCarry
 
+;*******************************************************************************
 ; Macro  : SFIRQ
 ; Purpose: Set Fast IRQ Flag
+
 macro      SFIRQ
            pushf
            or      [CC],01000000b
            popf
 endm       SFIRQ
 
+;*******************************************************************************
 ; Macro  : SEntireFlag
 ; Purpose: Set Entire Flag Flag
+
 macro      SEntireFlag
            pushf
            or      [CC],10000000b
@@ -201,8 +241,11 @@ Memory     equ     0
 Ports      equ     0FF00h
            db      00100h dup(?)
 
-           DATASEG
+;*******************************************************************************
 ; The following table is used to determine the entry point of each routine
+;*******************************************************************************
+           DATASEG
+
 OpCodeAll  dw      mcNEG               ; 00 -- NEGate
            dw      mcERROR             ; 01 -- none
            dw      mcERROR             ; 02 -- none
@@ -537,9 +580,10 @@ OpCode11   dw      131 dup(mcERROR)    ; 00 -> 82 -- none
            dw      mcCMPS              ; BC -- CoMPare with S
            dw      67 dup(mcERROR)     ; BD -> FF -- none
 
-;
+;*******************************************************************************
 ; Messages used by the Emulator
-;
+;*******************************************************************************
+
 Copyright  db      "Motorola 6809E Emulator ver. 1.20 "
            db      "(Limited OS-9 Level One Ver. 2.00 Emulator)",RETURN,LINEFEED
            db      "Copyright (c) 1990-2022 by Tony G. Papadimitriou. "
@@ -575,14 +619,17 @@ EMsg9      db      "*** Invalid opcode encountered ***",RETURN,LINEFEED
 EMsg9Len   =       $ - EMsg9
 EMsg10     db      "Incorrect DOS version.  Must use DOS 3.x or greater",RETURN,LINEFEED
 EMsg10Len  =       $ - EMsg10
-;
-; ---------------------- General Variables --------------------------
-;
+
+;*******************************************************************************
+; General Variables
+;*******************************************************************************
+
 PSP        dw      ?                   ; holds Program Segment Prefix
 OS9_On     db      1                   ; flag to indicate OS9 emulation
 
-;
-; ----------------- Variables used by the Emulator ------------------
+;*******************************************************************************
+; Variables used by the Emulator
+;*******************************************************************************
 ;
 ; Global variables (other than the 6809 registers)
 ;
@@ -761,7 +808,9 @@ proc       Restart
            ret
 endp       Restart
 
+;*******************************************************************************
 include    "loader.asm"
+;*******************************************************************************
 
 ;*******************************************************************************
 ; Routine: Errors
@@ -1225,16 +1274,17 @@ proc       mcCASE11
            jmp     [word bx]           ; go to routine through table (indirect)
 endp       mcCASE11
 
-;
-; -------------------- OPCODE ROUTINES ------------------------------
-;
+;*******************************************************************************
+; OPCODE ROUTINES
+;*******************************************************************************
+
 include    "opcodes1.asm"                ; in separate files :-)
 include    "opcodes2.asm"
 include    "os9.asm"                     ; OS-9 emulation routines
 
-;
-; ------------------ S U B R O U T I N E S --------------------------
-;
+;*******************************************************************************
+; S U B R O U T I N E S
+;*******************************************************************************
 
 ;*******************************************************************************
 ; Routine: Write
@@ -1272,4 +1322,6 @@ proc       Beep
            ret
 endp       Beep
 
+;*******************************************************************************
            end     Init6809
+;*******************************************************************************

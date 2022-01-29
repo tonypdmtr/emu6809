@@ -18,7 +18,6 @@ proc       mcERROR                     ; special routine to handle invalid ops
            ret
 endp       mcERROR
 
-
 ;*******************************************************************************
 
 proc       mcNEG
@@ -394,8 +393,8 @@ proc       mcSEX
 @@exit:    ret
 endp       mcSEX
 
-; general purpose procedure (see EXG and TFR instructions)
 ;*******************************************************************************
+; General purpose procedure (see EXG and TFR instructions)
 
 proc       GetRegister                 ; get the value of the register in AL/AX
            cmp     al,0                ; is it D?
