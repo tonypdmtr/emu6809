@@ -12,6 +12,7 @@
 ;          Parameters are function-dependent and are passed in the 6809
 ;          registers.  Function results are returned in the 6809 registers
 ;          B contains an error code if the Carry flag is set.
+; 220129 : Removed redundant JMP instruction by reversing previous conditional jump
 ;*******************************************************************************
 
            DATASEG
@@ -151,8 +152,7 @@ proc       I_writln
            pop     ds
            int     DOS_FUNCTION
            pop     ds
-           jc      @@Errors
-           jmp     short @@exit
+           jnc     @@exit
 @@Errors:  SCarry
            mov     [B],al
 @@exit:    ret

@@ -10,6 +10,7 @@
 ;          it is completely written in Assembly language there should be
 ;          a dramatic speed improvement over the Pascal version.
 ;          Note: SYNC instruction is currently not implemented
+; 220129 : Removed redundant JMP instruction by reversing previous conditional jump
 ;*******************************************************************************
 
 proc       mcERROR                     ; special routine to handle invalid ops
@@ -500,9 +501,8 @@ proc       mcEXG
            cmp     al,10001000b
            je      @@8bit
            cmp     al,00000000b
-           je      @@16bit
-           jmp     short @@exit        ; cannot transfer different sizes
-@@16bit:   GetByte
+           jne     @@exit              ; cannot transfer different sizes
+           GetByte                     ; 16bit case
            shr     al,4                ; figure out the first register
            call    GetRegister         ; in AX
            mov     bx,ax               ; and save it in BX
@@ -548,9 +548,8 @@ proc       mcTFR
            cmp     al,10001000b
            je      @@8bit
            cmp     al,00000000b
-           je      @@16bit
-           jmp     short @@exit        ; cannot transfer different sizes
-@@16bit:   GetByte
+           jne     @@exit              ; cannot transfer different sizes
+           GetByte                     ; 16bit case
            shr     al,4                ; figure out the first register
            call    GetRegister         ; in AX
            mov     bx,ax               ; move it to BX

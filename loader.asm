@@ -13,6 +13,7 @@
 ;          S-19 records.  In any other case an error is returned and the
 ;          caller should terminate immediately.
 ; 940814 : Adjusted code for 386
+; 220129 : Removed unnecessary hooks and fixed a spelling error
 ;*******************************************************************************
 
            DATASEG
@@ -89,7 +90,7 @@ endp       HexIt
 ;*******************************************************************************
 ; Routine: Convert
 ; Purpose: Convert an S19 formatted buffer to binary and load to memory
-; Input  : AX holds number of butes read in buffer
+; Input  : AX holds number of bytes read in buffer
 ; Output : CX holds number of characters to read next (1 -> BufLen)
 ;        : DX points to starting point in buffer for next read
 ;        : AX holds error code if any
@@ -107,11 +108,10 @@ proc       Convert
            je      @@GoOn              ; yes, continue
            mov     ax,128              ; "invalid S-record" error code
            jmp     @@exit              ; get out
-@@hook:    jmp     @@setup
 @@GoOn:    mov     al,[si+1]           ; get second byte from buffer in AL
            cmp     al,'9'              ; is it a 9 (end of file record)?
            mov     cx,0                ; in case we exit, CX = 0
-           je      @@hook              ; yes, set up registers and exit
+           je      @@setup             ; yes, set up registers and exit
            mov     ax,[si+4]           ; get load address MSN in hex
            xchg    ah,al
            call    HexIt               ; convert AX hex string to value in AL
@@ -160,10 +160,10 @@ proc       Convert
            call    HexIt
            not     al                  ; one's complement
            cmp     al,[CheckSum]       ; did we get the same CRC value?
-           je      @@hook1             ; yes, continue
+           je      @@hook              ; yes, continue
            mov     ax,129              ; checksum error
            jmp     @@exit
-@@hook1:   inc     si                  ; skip over Carriage Return
+@@hook:    inc     si                  ; skip over Carriage Return
            inc     si                  ; and Line Feed
            inc     [Counter]           ; also adjust counter
            inc     [Counter]
@@ -223,10 +223,9 @@ proc       LoadProgram
            mov     al,20h              ; sharing read mode with write denied
            int     DOS_FUNCTION
            pop     ds                  ; restore DS
-           jc      @@errors            ; we got errors, AX has error code
+           jc      @@exit              ; we got errors, AX has error code
            mov     [Handle],ax         ; save file handle
            jmp     short @@readit
-@@errors:  jmp     @@exit              ; hook for long jump
 @@readit:  mov     dx,offset LMsg      ; print "Loading..." message
            mov     cx,LMsgLen
            call    Write
